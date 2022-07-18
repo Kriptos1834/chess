@@ -1,0 +1,319 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+:root {
+	--bord-side-size: calc(100vw * 0.9);
+	--cell-side-size: calc(var(--bord-side-size) / 8);
+	--cell-side-max-size: 93px;
+
+	--black-cell-color: rgb(84, 121, 70);
+	--white-cell-color: rgb(255, 247, 224);
+	--selected-cell-mask-color: rgba(35, 49, 29, 0.65);
+	--check-cell-mask-color: rgba(212, 55, 55, 0.60);
+}
+
+.app {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.board {
+	width: var(--bord-side-size);
+	height: var(--bord-side-size);
+	max-width: calc(var(--cell-side-max-size) * 8);
+	max-height: calc(var(--cell-side-max-size) * 8);
+	display: flex;
+	flex-wrap: wrap;
+	position: relative;
+}
+
+.cell {
+	position: relative;
+	height: var(--cell-side-size);
+	width: var(--cell-side-size);
+	max-width: 93px;
+	max-height: 93px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.cell.available {
+	cursor: pointer;
+}
+
+.cell.available::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: calc(var(--cell-side-size) * .2);
+	width: calc(var(--cell-side-size) * .2);
+	max-width: calc(var(--cell-side-max-size) * .23);
+	max-height: calc(var(--cell-side-max-size) * .23);
+	border-radius: 50%;
+	background-color: var(--selected-cell-mask-color);
+
+}
+
+
+.cell.selected::after,
+.cell.available.enemy-piece::after,
+.cell.check::after {
+	content: '';
+	transform: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	border-radius: 0;
+	max-height: unset;
+	max-width: unset;
+}
+
+.cell.selected::after {
+	background-color: var(--selected-cell-mask-color)
+}
+
+.cell.available.enemy-piece::after {
+	border: 7px solid var(--selected-cell-mask-color);
+	border-radius: 50%;
+	background: none;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 80%;
+	width: 80%;
+}
+
+.cell.overflow {
+	z-index: 0;
+}
+
+.cell.check.cell.check::after {
+	background-color: var(--check-cell-mask-color)
+}
+
+.cell.black {
+	background-color: var(--black-cell-color);
+}
+
+.cell.white {
+	background-color: var(--white-cell-color)
+}
+
+.piece {
+	height: 100%;
+	width: 100%;
+	stroke-width: 20;
+	stroke: #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+	cursor: pointer;
+}
+
+.piece svg {
+	height: calc(var(--cell-side-size) * 0.7);
+	max-height: calc(var(--cell-side-max-size)*0.7);
+}
+
+.piece.white {
+	color: #fff;
+}
+
+.piece.black {
+	color: rgb(15, 15, 15);
+}
+
+.pawn-transformation {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: rgba(15, 15, 15, 0.4);
+	top: 0;
+	left: 0;
+	z-index: 2;
+	display: flex;
+}
+
+.pawn-transformation .selection {
+	display: flex;
+	flex-direction: column;
+	width: var(--cell-side-size);
+	max-width: var(--cell-side-max-size);
+	height: calc(var(--cell-side-size) * 4);
+	max-height: calc(var(--cell-side-max-size) * 4);
+	align-items: center;
+}
+
+.piece-select {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: .2s ease;
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 50%;
+	outline: none;
+	border: none;
+}
+
+.piece-select:hover{
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.piece-select svg{
+	height: calc(var(--cell-side-size) * 0.7);
+	max-height: calc(var(--cell-side-max-size)*0.7);
+	stroke-width: 20;
+	stroke: #000;
+	color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+	:root {
+		--bord-side-size: 100vw;
+	}
+}
